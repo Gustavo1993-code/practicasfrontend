@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyecto Módulo 1</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #51d0da;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      position: relative;
+    }
+    .fecha-hora {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 12px;
+      color: #666;
+    }
+    input[type="text"] {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px;
+      margin-left: 5px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    .remover {
+      background-color: #dc3545;
+    }
+    .completar {
+      background-color: #28a745;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 10px;
+      background-color: #e9ecef;
+      margin-bottom: 8px;
+      border-radius: 4px;
+      flex-direction: column;
+    }
+    .tarea-texto {
+      width: 100%;
+    }
+    .tarea-texto.completada {
+      color: green;
+      font-weight: bold;
+      position: relative;
+      padding-left: 25px;
+    }
+    .tarea-texto.completada::before {
+      content: "🆗";
+      position: absolute;
+      left: 0;
+    }
+    .tarea-hora {
+      font-size: 11px;
+      color: #666;
+      margin-top: 4px;
+    }
+    .botones {
+      align-self: flex-end;
+      margin-top: 5px;
+    }
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="fecha-hora" id="fechaHora"></div>
+    <h2>Lista de Tareas</h2>
+    <input type="text" id="tarea" placeholder="Nueva tarea" aria-label="Nueva tarea">
+    <button id="añadirTarea">Añadir Tarea</button>
+    <ul id="listaTareas"></ul>
+    <div id="errorMessage" class="error"></div>
+  </div>
+
+  <script>
+    // Actualizar fecha y hora general
+    function actualizarFechaHora() {
+      const ahora = new Date();
+      const opciones = {
+        weekday: 'short', year: 'numeric', month: 'short',
+        day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit'
+      };
+      const formato = ahora.toLocaleString('es-ES', opciones);
+      $("#fechaHora").text(formato);
+    }
+    setInterval(actualizarFechaHora, 1000);
+    actualizarFechaHora();
+
+    // Crear una nueva tarea con su fecha
+    function crearElementoTarea(texto) {
+      const ahora = new Date();
+      const opciones = {
+        year: 'numeric', month: 'short', day: 'numeric',
+        hour: '2-digit', minute: '2-digit', second: '2-digit'
+      };
+      const fechaHoraTarea = ahora.toLocaleString('es-ES', opciones);
+      const tareaHTML = `
+        <li>
+          <span class="tarea-texto">${texto}</span>
+          <div class="tarea-hora">Agregada: ${fechaHoraTarea}</div>
+          <div class="botones">
+            <button class="completar">✔</button>
+            <button class="remover">✖</button>
+          </div>
+        </li>`;
+      $("#listaTareas").append(tareaHTML);
+    }
+
+    function añadirTarea() {
+      let textoTarea = $("#tarea").val().trim();
+      if (textoTarea !== "") {
+        crearElementoTarea(textoTarea);
+        $("#tarea").val("");
+        $("#errorMessage").text("");
+      } else {
+        $("#errorMessage").text("¡Por favor, ingresa una tarea!");
+      }
+    }
+
+    $("#añadirTarea").click(function() {
+      añadirTarea();
+    });
+
+    $("#tarea").keypress(function(e) {
+      if (e.which === 13) {
+        añadirTarea();
+      }
+    });
+
+    $("#listaTareas").on("click", ".remover", function() {
+      $(this).closest("li").remove();
+    });
+
+    $("#listaTareas").on("click", ".completar", function() {
+      const tareaTexto = $(this).closest("li").find(".tarea-texto");
+      const tareaHora = $(this).closest("li").find(".tarea-hora");
+
+      tareaTexto.toggleClass("completada");
+
+      const ahora = new Date();
+      const opciones = {
+        year: 'numeric', month: 'short', day: 'numeric',
+        hour: '2-digit', minute: '2-digit', second: '2-digit'
+      };
+      const nuevaFecha = ahora.toLocaleString('es-ES', opciones);
+
+      if (tareaTexto.hasClass("completada")) {
+        tareaHora.text(`Completada: ${nuevaFecha}`);
+      } else {
+        tareaHora.text(`Agregada: ${nuevaFecha}`);
+      }
+    });
+  </script>
+</body>
+</html>
