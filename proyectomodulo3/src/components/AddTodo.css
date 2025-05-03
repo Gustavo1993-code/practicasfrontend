@@ -1,0 +1,14 @@
+.add-todo {
+  margin-bottom: 20px;
+}
+
+.add-todo input {
+  padding: 5px;
+  width: 60%;
+  margin-right: 10px;
+}
+
+.add-todo button {
+  padding: 6px 12px;
+  cursor: pointer;
+}

@@ -1,0 +1,55 @@
+/* index.css */
+
+/* Estilo global */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+/* Estilo del header */
+.ant-layout-header {
+  background-color: #1890ff;
+  font-size: 24px;
+  color: white;
+  text-align: center;
+  padding: 0;
+}
+
+/* Estilo del contenido */
+.ant-layout-content {
+  background-color: white;
+  padding: 20px;
+}
+
+/* Mejorar la apariencia de los botones */
+.ant-btn {
+  font-size: 14px;
+  margin: 5px;
+}
+
+.ant-btn-danger {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.ant-btn-danger:hover {
+  background-color: #ff0000;
+  border-color: #ff0000;
+}
+
+/* Estilo de la lista */
+.ant-list-item {
+  padding: 10px;
+  font-size: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.ant-card {
+  border-radius: 10px;
+}
+
+.ant-card-body {
+  padding: 20px;
+}
